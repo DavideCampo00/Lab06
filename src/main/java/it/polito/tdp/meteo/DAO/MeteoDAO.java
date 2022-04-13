@@ -4,9 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.meteo.model.CittaUmiditaMedia;
 import it.polito.tdp.meteo.model.Rilevamento;
 
 public class MeteoDAO {
@@ -43,6 +45,39 @@ public class MeteoDAO {
 
 		return null;
 	}
+	
+	
+	public List<CittaUmiditaMedia> getUmiditaCitta(int mese){
+		final String sql = "SELECT Localita, AVG(Umidita) AS mediaUmidita "
+				+ "FROM situazione "
+				+ "WHERE MONTH(Data)=? "
+				+ "GROUP BY Localita ";
+
+		List<CittaUmiditaMedia> rilevamentiMedi = new ArrayList<CittaUmiditaMedia>();
+
+		try {
+			Connection conn = ConnectDB.getConnection();
+			PreparedStatement st = conn.prepareStatement(sql);
+			st.setInt(1, mese);
+
+			ResultSet rs = st.executeQuery();
+
+			while (rs.next()) {
+
+				CittaUmiditaMedia c=new CittaUmiditaMedia(rs.getString("Localita"), rs.getDouble("mediaUmidita"));
+				rilevamentiMedi.add(c);
+			}
+
+			conn.close();
+			return rilevamentiMedi;
+
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+	}
+	
 
 
 }
