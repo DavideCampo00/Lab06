@@ -1,20 +1,20 @@
 package it.polito.tdp.meteo.model;
 
 public class CittaUmiditaMedia {
-	private String citta;
+	private Citta citta;
 	private double umiditaMedia;
 	
-	public CittaUmiditaMedia(String citta, double umiditaMedia) {
+	public CittaUmiditaMedia(Citta citta, double umiditaMedia) {
 		super();
 		this.citta = citta;
 		this.umiditaMedia = umiditaMedia;
 	}
 
-	public String getCitta() {
+	public Citta getCitta() {
 		return citta;
 	}
 
-	public void setCitta(String citta) {
+	public void setCitta(Citta citta) {
 		this.citta = citta;
 	}
 

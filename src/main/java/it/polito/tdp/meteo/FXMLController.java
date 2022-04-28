@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import it.polito.tdp.meteo.model.Citta;
 import it.polito.tdp.meteo.model.CittaUmiditaMedia;
 import it.polito.tdp.meteo.model.Model;
 import javafx.event.ActionEvent;
@@ -41,13 +42,23 @@ public class FXMLController {
 
     @FXML
     void doCalcolaSequenza(ActionEvent event) {
+    	txtResult.clear();
+    	Integer mese=boxMese.getValue();
+    	if(mese==null) {
+    		txtResult.setText("Seleziona un mese ");
+    		return;
+    	}  	
+    	List<Citta> output=this.model.trovaSequenza(mese);
+    	for(Citta c:output) {
+    		txtResult.appendText(c.toString()+"\n");
+    	}
 
     }
 
     @FXML
     void doCalcolaUmidita(ActionEvent event) {
     	txtResult.clear();
-    	List<CittaUmiditaMedia> output= new ArrayList();
+    	List<CittaUmiditaMedia> output= new ArrayList<CittaUmiditaMedia>();
     	
     	Integer mese=boxMese.getValue();
     	if(mese==null) {
@@ -67,13 +78,14 @@ public class FXMLController {
         assert btnUmidita != null : "fx:id=\"btnUmidita\" was not injected: check your FXML file 'Scene.fxml'.";
         assert btnCalcola != null : "fx:id=\"btnCalcola\" was not injected: check your FXML file 'Scene.fxml'.";
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Scene.fxml'.";
-        boxMese.getItems().clear();
-        for(int i=1;i<=12;i++) {
-        	boxMese.getItems().add(i);
-        }
+       
     }
     public void setModel(Model model) {
     	this.model=model;
+    	 boxMese.getItems().clear();
+         for(int i=1;i<=12;i++) {
+         	boxMese.getItems().add(i);
+         }
     }
 }
 
